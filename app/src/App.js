@@ -5,6 +5,8 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import LandingPage from './pages/LandingPage';
 import BookingPage from './pages/BookingPage';
+import SeatBookingPage from './pages/SeatBookingPage';
+import PaymentPage from './pages/PaymentPage';
 
 function App() {
   return (
@@ -13,7 +15,8 @@ function App() {
       <Route path="/login" element={<Login/>}/>
       <Route path="/register" element={<Register/>}/>
       <Route path="/booking" element={<BookingPage />} />
-     
+      <Route path="/seats" element={<SeatBookingPage />} />
+        <Route path="/payment" element={<PaymentPage />} />
     </Routes>
   );
 }
