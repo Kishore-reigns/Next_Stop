@@ -8,6 +8,7 @@ import BookingPage from './pages/BookingPage';
 import SeatBookingPage from './pages/SeatBookingPage';
 import PaymentPage from './pages/PaymentPage';
 import TicketPage from './pages/TicketPage';
+import ProfilePage from './pages/ProfilePage';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
       <Route path="/seats" element={<SeatBookingPage />} />
       <Route path="/payment" element={<PaymentPage />} />
       <Route path="/ticket" element={<TicketPage />} />
+      <Route path="/profile" element={<ProfilePage />} />
     </Routes>
   );
 }

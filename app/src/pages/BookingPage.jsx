@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Navbar from "../components/Navbar";
 
 const BookingPage = () => {
   const [fromCity, setFromCity] = useState("");
@@ -45,103 +46,111 @@ const BookingPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-red-50 p-6">
-      <h1 className="text-3xl font-bold text-center text-red-600 mb-8">
-        Book Your Bus
-      </h1>
+    <div className="min-h-screen bg-red-50">
+      {/* Navbar */}
+      <Navbar />
 
-      {/* Search Section */}
-      <div className="bg-white shadow-lg rounded-xl p-6 max-w-4xl mx-auto mb-10">
-        <div className="grid md:grid-cols-3 gap-4">
-          {/* From City */}
-          <div>
-            <label className="block font-semibold text-gray-700 mb-2">
-              From
-            </label>
-            <select
-              value={fromCity}
-              onChange={(e) => setFromCity(e.target.value)}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500"
-            >
-              <option value="">Select City</option>
-              {cities.map((city, idx) => (
-                <option key={idx} value={city}>
-                  {city}
-                </option>
-              ))}
-            </select>
-          </div>
+      {/* Page Content */}
+      <div className="pt-24 px-6"> {/* 👈 adds space below navbar */}
+        <h1 className="text-3xl font-bold text-center text-red-600 mb-8">
+          Book Your Bus
+        </h1>
 
-          {/* To City */}
-          <div>
-            <label className="block font-semibold text-gray-700 mb-2">To</label>
-            <select
-              value={toCity}
-              onChange={(e) => setToCity(e.target.value)}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500"
-            >
-              <option value="">Select City</option>
-              {cities.map((city, idx) => (
-                <option key={idx} value={city}>
-                  {city}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* Search Button */}
-          <div className="flex items-end">
-            <button
-              onClick={handleSearch}
-              className="w-full bg-red-600 text-white px-4 py-3 rounded-lg hover:bg-red-700 transition"
-            >
-              Search Buses
-            </button>
-          </div>
-        </div>
-
-        {/* Bus Name Search */}
-        <div className="mt-6">
-          <input
-            type="text"
-            placeholder="Search by bus name..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500"
-          />
-        </div>
-      </div>
-
-      {/* Bus Results */}
-      <div className="max-w-4xl mx-auto space-y-6">
-        {filteredBuses.length === 0 ? (
-          <p className="text-center text-gray-600">
-            No buses found. Please search to see results.
-          </p>
-        ) : (
-          filteredBuses.map((bus) => (
-            <div
-              key={bus.id}
-              className="bg-white shadow-md p-6 rounded-lg flex justify-between items-center hover:shadow-lg transition"
-            >
-              <div>
-                <h2 className="text-xl font-semibold text-red-600">
-                  {bus.name}
-                </h2>
-                <p className="text-gray-700">{bus.type}</p>
-                <p className="text-gray-500">
-                  Departure: {bus.departure} | Arrival: {bus.arrival}
-                </p>
-              </div>
-              <div className="text-right">
-                <p className="text-lg font-bold text-gray-800">₹{bus.price}</p>
-                <button className="mt-2 bg-red-600 text-white px-5 py-2 rounded-lg hover:bg-red-700 transition">
-                  Book
-                </button>
-              </div>
+        {/* Search Section */}
+        <div className="bg-white shadow-lg rounded-xl p-6 max-w-4xl mx-auto mb-10">
+          <div className="grid md:grid-cols-3 gap-4">
+            {/* From City */}
+            <div>
+              <label className="block font-semibold text-gray-700 mb-2">
+                From
+              </label>
+              <select
+                value={fromCity}
+                onChange={(e) => setFromCity(e.target.value)}
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500"
+              >
+                <option value="">Select City</option>
+                {cities.map((city, idx) => (
+                  <option key={idx} value={city}>
+                    {city}
+                  </option>
+                ))}
+              </select>
             </div>
-          ))
-        )}
+
+            {/* To City */}
+            <div>
+              <label className="block font-semibold text-gray-700 mb-2">
+                To
+              </label>
+              <select
+                value={toCity}
+                onChange={(e) => setToCity(e.target.value)}
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500"
+              >
+                <option value="">Select City</option>
+                {cities.map((city, idx) => (
+                  <option key={idx} value={city}>
+                    {city}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Search Button */}
+            <div className="flex items-end">
+              <button
+                onClick={handleSearch}
+                className="w-full bg-red-600 text-white px-4 py-3 rounded-lg hover:bg-red-700 transition"
+              >
+                Search Buses
+              </button>
+            </div>
+          </div>
+
+          {/* Bus Name Search */}
+          <div className="mt-6">
+            <input
+              type="text"
+              placeholder="Search by bus name..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500"
+            />
+          </div>
+        </div>
+
+        {/* Bus Results */}
+        <div className="max-w-4xl mx-auto space-y-6">
+          {filteredBuses.length === 0 ? (
+            <p className="text-center text-gray-600">
+              No buses found. Please search to see results.
+            </p>
+          ) : (
+            filteredBuses.map((bus) => (
+              <div
+                key={bus.id}
+                className="bg-white shadow-md p-6 rounded-lg flex justify-between items-center hover:shadow-lg transition"
+              >
+                <div>
+                  <h2 className="text-xl font-semibold text-red-600">
+                    {bus.name}
+                  </h2>
+                  <p className="text-gray-700">{bus.type}</p>
+                  <p className="text-gray-500">
+                    Departure: {bus.departure} | Arrival: {bus.arrival}
+                  </p>
+                </div>
+                <div className="text-right">
+                  <p className="text-lg font-bold text-gray-800">₹{bus.price}</p>
+                  <button className="mt-2 bg-red-600 text-white px-5 py-2 rounded-lg hover:bg-red-700 transition">
+                    Book
+                  </button>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
       </div>
     </div>
   );
