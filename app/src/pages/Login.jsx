@@ -1,5 +1,6 @@
 import React from "react";
 import LoginForm from "../components/LoginForm";
+import {Link} from "react-router-dom"
 
 const Login = () => {
   return (
@@ -11,9 +12,12 @@ const Login = () => {
           Forgot Password?
         </p>
 
+        <Link to = "..\register">
         <p className="text-center mt-4 text-red-600 hover:underline cursor-pointer">
           Don't have an account?
         </p>
+        </Link>
+        
       </div>
     </div>
   );

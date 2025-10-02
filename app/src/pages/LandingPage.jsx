@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link} from "react-router-dom";
 
 const LandingPage = () => {
   return (
@@ -12,7 +12,7 @@ const LandingPage = () => {
           Travel with comfort and confidence.
         </p>
         <Link
-          to="/"
+          to="/login"
           className="px-8 py-3 bg-white text-red-600 font-semibold rounded-lg shadow-md hover:bg-red-100 transition"
         >
           Book Now
