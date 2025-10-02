@@ -1,62 +1,98 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import emailjs from "emailjs-com";
 
 const FinalizePayment = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const seats = location.state?.seats || [];
-  const passengerDetails = location.state?.passengerDetails || [];
+  const {
+    seats = [],
+    passengerDetails = [],
+    busName = "KPN Travels",
+    from = "Chennai",
+    to = "Bangalore",
+    date = "2025-09-18",
+  } = location.state || {};
 
-  const seatPrice = 500;
-  const totalAmount = seats.length * seatPrice;
-  const discount = (totalAmount * 2) / 100;
-  const finalAmount = totalAmount - discount;
+  const seatPrice = 200;
+  const totalPrice = seats.length * seatPrice;
+  const discount = totalPrice * 0.02;
+  const finalAmount = totalPrice - discount;
 
-  // encode data into query string (for QR code)
-  const qrData = encodeURIComponent(
-    JSON.stringify({ seats, passengerDetails, amount: finalAmount })
-  );
+  const ticketId = Math.floor(Math.random() * 1000000);
 
-  // using goqr.me API to generate QR code as image
+  // Generate QR code URL using API
+  const ticketData = {
+    seats,
+    passengerDetails,
+    busName,
+    from,
+    to,
+    date,
+    finalAmount,
+    ticketId,
+  };
+  const qrData = encodeURIComponent(JSON.stringify(ticketData));
   const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${qrData}`;
 
-  // fallback simulate button
-  const handleSimulateScan = () => {
-    navigate("/ticket", {
-      state: { seats, passengerDetails, amount: finalAmount },
-    });
+  const handlePayment = () => {
+    // Send email automatically via EmailJS
+    const passengerList = passengerDetails
+      .map((p) => `<li>${p.name} (Age: ${p.age}, Gender: ${p.gender})</li>`)
+      .join("");
+
+    const templateParams = {
+      to_name: passengerDetails[0]?.name || "Passenger",
+      to_email: "malarvannanm11@gmail.com",
+      bus_name: busName,
+      from,
+      to,
+      date,
+      seats: seats.join(", "),
+      passengers: passengerList,
+      ticket_id: ticketId,
+      amount: finalAmount,
+      qr_code_url: qrUrl,
+    };
+
+    emailjs
+      .send(
+        "service_iv6fxwn",   // EmailJS service ID
+        "template_zfztbyl",  // EmailJS template ID
+        templateParams,
+        "bQLV-wFxJ_cfNWDs3"    // EmailJS public key
+      )
+      .then(() => console.log("Ticket email sent successfully!"))
+      .catch((err) => console.log("Email sending failed:", err));
+
+    // Navigate to TicketPage with all ticket info
+    navigate("/ticket", { state: { ...ticketData, qrUrl } });
   };
 
   return (
-    <div className="min-h-screen bg-blue-50 flex flex-col items-center justify-center">
-      <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-lg text-center">
-        <h1 className="text-2xl font-bold text-blue-600 mb-4">
-          Finalize Payment
-        </h1>
-        <p className="mb-2">Seats Selected: {seats.join(", ")}</p>
-        <p className="mb-2">Price per Seat: ₹{seatPrice}</p>
-        <p className="mb-2">Total: ₹{totalAmount}</p>
-        <p className="mb-2 text-green-600">
-          Discount (2%): -₹{discount.toFixed(2)}
-        </p>
-        <p className="text-xl font-semibold text-blue-700 mb-6">
-          Final Amount: ₹{finalAmount.toFixed(2)}
-        </p>
-
-        <div className="flex flex-col items-center">
-          <img src={qrUrl} alt="QR Code" />
-          <p className="mt-3 text-gray-500">
-            Scan this QR with your phone to confirm payment
-          </p>
-        </div>
+    <div className="min-h-screen bg-red-50 flex flex-col items-center justify-center p-6">
+      <div className="bg-white w-full max-w-lg rounded-xl shadow-lg p-8 text-center">
+        <h1 className="text-2xl font-bold text-red-600 mb-6">Finalize Payment</h1>
+        <p>Seats: {seats.join(", ")}</p>
+        <p>Total Price: ₹{totalPrice}</p>
+        <p>Discount (2%): ₹{discount}</p>
+        <p className="font-semibold">Final Amount: ₹{finalAmount}</p>
 
         <button
-          onClick={handleSimulateScan}
-          className="mt-6 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition"
+          onClick={handlePayment}
+          className="mt-6 bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 transition"
         >
-          Simulate Scan → Get Ticket
+          Submit Payment
         </button>
+
+        <div className="mt-6">
+          <h3 className="mb-2">QR Code</h3>
+          <img src={qrUrl} alt="Ticket QR Code" className="mx-auto" />
+          <p className="text-sm text-gray-500 mt-1">
+            QR code will also be sent via email
+          </p>
+        </div>
       </div>
     </div>
   );
