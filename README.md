@@ -12,8 +12,8 @@
 
 
 # To Install tailwind
-   npm install -D tailwindcss@3
-   npx tailwindcss init -p
+    npm install -D tailwindcss@3
+    npx tailwindcss init -p
 
 # Qr code
     npm install qrcode.react
